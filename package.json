@@ -1,0 +1,28 @@
+{
+  "author": "Alex Potsides",
+  "name": "mongoose-crate-localfs",
+  "description": "Attach files to MongoDB models via Mongoose.js",
+  "keywords": ["mongoose", "uploads", "attachments", "files"],
+  "version": "0.0.1",
+  "homepage": "https://github.com/achingbrain/mongoose-crate-localfs",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/achingbrain/mongoose-crate-localfs.git"
+  },
+  "main": "index.js",
+  "scripts": {
+  "test": "istanbul cover ./node_modules/mocha/bin/_mocha"
+  },
+  "dependencies": {
+    "mongoose-crate": "^0.0",
+    "async": "^0.2",
+    "mkdirp": "^0.3"
+  },
+  "devDependencies": {
+    "mocha": "^1.18",
+    "should": "^3.2",
+    "mongoose": "^3.8",
+    "istanbul": "^0.2",
+    "sinon": "^1.9"
+  }
+}
