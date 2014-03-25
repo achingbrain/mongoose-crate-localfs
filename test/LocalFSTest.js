@@ -54,4 +54,64 @@ describe("LocalFS", function() {
 			done();
 		});
 	})
+
+	it("should delete a file", function(done) {
+		var provider = new LocalFS({
+			directory: os.tmpdir()
+		});
+
+		// make a copy of the file so we don't delete it from the fixtures directory
+		var sourceFile = path.resolve(__dirname + "/./fixtures/node_js_logo.png");
+		var targetFile = path.join(os.tmpdir(), randomString(20));
+
+		fs.existsSync(sourceFile).should.be.true;
+		fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
+		fs.existsSync(targetFile).should.be.true;
+
+		provider.save(targetFile, function(error, url) {
+			if(error) {
+				throw error;
+			}
+
+			// file should have moved into directory
+			fs.existsSync(url).should.be.true;
+
+			provider.remove(url, function(error) {
+				if(error) {
+					throw error;
+				}
+
+				// file should have been deleted
+				fs.existsSync(url).should.be.false;
+
+				done();
+			});
+		});
+	});
+
+	it("should not delete a file outside of our directory", function(done) {
+		var targetDirectory = path.join(os.tmpdir(), randomString(20));
+
+		var provider = new LocalFS({
+			directory: targetDirectory
+		});
+
+		// make a copy of the file so we don't delete it from the fixtures directory
+		var sourceFile = path.resolve(__dirname + "/./fixtures/node_js_logo.png");
+		var targetFile = path.join(os.tmpdir(), randomString(20));
+
+		fs.existsSync(sourceFile).should.be.true;
+		fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
+		fs.existsSync(targetFile).should.be.true;
+
+		provider.remove(targetFile, function(error) {
+			// should have errored
+			error.should.be.ok;
+
+			// file should not have been deleted
+			fs.existsSync(targetFile).should.be.true;
+
+			done();
+		});
+	});
 })
