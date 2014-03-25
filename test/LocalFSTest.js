@@ -39,7 +39,7 @@ describe("LocalFS", function() {
 		fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
 		fs.existsSync(targetFile).should.be.true;
 
-		provider.createOrUpdate(targetFile, function(error, url) {
+		provider.save(targetFile, function(error, url) {
 			if(error) {
 				throw error;
 			}
