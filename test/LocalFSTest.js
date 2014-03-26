@@ -76,7 +76,7 @@ describe("LocalFS", function() {
 			// file should have moved into directory
 			fs.existsSync(url).should.be.true;
 
-			provider.remove(url, function(error) {
+			provider.remove({url: url}, function(error) {
 				if(error) {
 					throw error;
 				}
@@ -104,7 +104,7 @@ describe("LocalFS", function() {
 		fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
 		fs.existsSync(targetFile).should.be.true;
 
-		provider.remove(targetFile, function(error) {
+		provider.remove({url: targetFile}, function(error) {
 			// should have errored
 			error.should.be.ok;
 
