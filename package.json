@@ -3,7 +3,7 @@
   "name": "mongoose-crate-localfs",
   "description": "mongoose-crate StorageProvider that stores files on the local filesystem",
   "keywords": ["mongoose", "mongoose-crate", "uploads", "attachments", "files"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/achingbrain/mongoose-crate-localfs",
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "coveralls": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "async": "^0.2",
+    "async": "^0.4",
     "mkdirp": "^0.3",
     "check-types": "^1.2"
   },
