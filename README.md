@@ -8,32 +8,32 @@ A StorageProvider for mongoose-crate that stores files on the local filesystem.
 
 ```javascript
 var mongoose = require('mongoose'),
-  crate = require("mongoose-crate"),
-  LocalFS = require("mongoose-crate-localfs");
+  crate = require('mongoose-crate'),
+  LocalFS = require('mongoose-crate-localfs')
 
 var PostSchema = new mongoose.Schema({
   title: String,
   description: String
-});
+})
 
 PostSchema.plugin(crate, {
   storage: new LocalFS({
-    directory: "/path/to/storage/directory"
+    directory: '/path/to/storage/directory'
   }),
   fields: {
     file: {}
   }
-});
+})
 
-var Post = mongoose.model('Post', PostSchema);
+var Post = mongoose.model('Post', PostSchema)
 ```
 
 .. then later:
 
 ```javascript
-var post = new Post();
-post.attach("image", {path: "/path/to/image"}, function(error) {
-	// file is now attached and post.file is populated e.g.:
-	// post.file.url
-});
+var post = new Post()
+post.attach('image', {path: '/path/to/image'}, function(error) {
+  // file is now attached and post.file is populated e.g.:
+  // post.file.url
+})
 ```
