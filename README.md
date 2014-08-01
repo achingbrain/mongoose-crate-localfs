@@ -18,7 +18,10 @@ var PostSchema = new mongoose.Schema({
 
 PostSchema.plugin(crate, {
   storage: new LocalFS({
-    directory: '/path/to/storage/directory'
+    directory: '/path/to/storage/directory',
+    path: function(attachment) { // where the file is stored in the directory - defaults to this function
+      return return '/' + path.basename(attachment.path)
+    }
   }),
   fields: {
     file: {}
