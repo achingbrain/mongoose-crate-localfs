@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "async": "^0.9",
-    "mkdirp": "^0.4",
+    "mkdirp": "^0.5",
     "check-types": "^1.2"
   },
   "devDependencies": {
