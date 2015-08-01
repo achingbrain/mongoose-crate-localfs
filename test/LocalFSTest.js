@@ -57,6 +57,322 @@ describe('LocalFS', function() {
     })
   })
 
+  it('should use directory as function', function(done) {
+    var targetDirectory = path.join(os.tmpdir(), randomString(20))
+
+    // should not exist yet
+    fs.existsSync(targetDirectory).should.be.false
+
+    var provider = new LocalFS({
+      directory: function () {
+        return targetDirectory
+      }
+    })
+
+    // make a copy of the file so we don't delete it from the fixtures directory
+    var sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    var targetFile = path.join(os.tmpdir(), randomString(20))
+
+    fs.existsSync(sourceFile).should.be.true
+    fs.writeFileSync(targetFile, fs.readFileSync(sourceFile))
+    fs.existsSync(targetFile).should.be.true
+
+    provider.save({
+      path: targetFile
+    }, undefined, function(error, url) {
+      if(error) {
+        throw error
+      }
+
+      // should have created target directory
+      fs.existsSync(targetDirectory).should.be.true
+
+      // file should have moved into directory
+      fs.existsSync(targetFile).should.be.false
+      fs.existsSync(url).should.be.true
+
+      done()
+    })
+  })
+
+  it('should use directory as function with callback', function(done) {
+    var targetDirectory = path.join(os.tmpdir(), randomString(20))
+
+    // should not exist yet
+    fs.existsSync(targetDirectory).should.be.false
+
+    var provider = new LocalFS({
+      directory: function (arg, callback) {
+        callback(targetDirectory)
+      }
+    })
+
+    // make a copy of the file so we don't delete it from the fixtures directory
+    var sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    var targetFile = path.join(os.tmpdir(), randomString(20))
+
+    fs.existsSync(sourceFile).should.be.true
+    fs.writeFileSync(targetFile, fs.readFileSync(sourceFile))
+    fs.existsSync(targetFile).should.be.true
+
+    provider.save({
+      path: targetFile
+    }, undefined, function(error, url) {
+      if(error) {
+        throw error
+      }
+
+      // should have created target directory
+      fs.existsSync(targetDirectory).should.be.true
+
+      // file should have moved into directory
+      fs.existsSync(targetFile).should.be.false
+      fs.existsSync(url).should.be.true
+
+      done()
+    })
+  })
+
+  it('should bind the document to the directory function', function(done) {
+    var targetDirectory = path.join(os.tmpdir(), randomString(20))
+    var MyClass = function MyClass() {}
+
+    // should not exist yet
+    fs.existsSync(targetDirectory).should.be.false
+
+    var provider = new LocalFS({
+      directory: function (arg, callback) {
+        this.should.instanceOf(MyClass)
+        callback(targetDirectory)
+      }
+    })
+
+    // make a copy of the file so we don't delete it from the fixtures directory
+    var sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    var targetFile = path.join(os.tmpdir(), randomString(20))
+
+    fs.existsSync(sourceFile).should.be.true
+    fs.writeFileSync(targetFile, fs.readFileSync(sourceFile))
+    fs.existsSync(targetFile).should.be.true
+
+    provider.save({
+      path: targetFile
+    }, new MyClass (), function(error, url) {
+      if(error) {
+        throw error
+      }
+
+      // should have created target directory
+      fs.existsSync(targetDirectory).should.be.true
+
+      // file should have moved into directory
+      fs.existsSync(targetFile).should.be.false
+      fs.existsSync(url).should.be.true
+
+      done()
+    })
+  })
+
+  it('should use not create the file if an error received from directory callback ', function(done) {
+    var targetDirectory = path.join(os.tmpdir(), randomString(20))
+
+    // should not exist yet
+    fs.existsSync(targetDirectory).should.be.false
+
+    var provider = new LocalFS({
+      directory: function (arg, callback) {
+        callback(new Error('Some error occurs'))
+      }
+    })
+
+    // make a copy of the file so we don't delete it from the fixtures directory
+    var sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    var targetFile = path.join(os.tmpdir(), randomString(20))
+
+    fs.existsSync(sourceFile).should.be.true
+    fs.writeFileSync(targetFile, fs.readFileSync(sourceFile))
+    fs.existsSync(targetFile).should.be.true
+
+    provider.save({
+      path: targetFile
+    }, undefined, function(error, url) {
+      should.exist(error)
+
+      // should have created target directory
+      fs.existsSync(targetDirectory).should.be.false
+
+      // file should have moved into directory
+      fs.existsSync(targetFile).should.be.true
+      fs.existsSync(url).should.be.false
+
+      done()
+    })
+  })
+
+  it('should use path as function', function(done) {
+    var dir = os.tmpdir()
+    var pth = randomString(20)
+    var targetDirectory = path.join(dir, pth)
+
+    // should not exist yet
+    fs.existsSync(targetDirectory).should.be.false
+
+    var provider = new LocalFS({
+      directory: dir,
+      path: function () {
+        return pth
+      }
+    })
+
+    // make a copy of the file so we don't delete it from the fixtures directory
+    var sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    var targetFile = path.join(os.tmpdir(), randomString(20))
+
+    fs.existsSync(sourceFile).should.be.true
+    fs.writeFileSync(targetFile, fs.readFileSync(sourceFile))
+    fs.existsSync(targetFile).should.be.true
+
+    provider.save({
+      path: targetFile
+    }, undefined, function(error, url) {
+      if(error) {
+        throw error
+      }
+
+      // should have created target directory
+      fs.existsSync(targetDirectory).should.be.true
+
+      // file should have moved into directory
+      fs.existsSync(targetFile).should.be.false
+      fs.existsSync(url).should.be.true
+
+      done()
+    })
+  })
+
+  it('should use path as function with callback', function(done) {
+    var dir = os.tmpdir()
+    var pth = randomString(20)
+    var targetDirectory = path.join(dir, pth)
+
+    // should not exist yet
+    fs.existsSync(targetDirectory).should.be.false
+
+    var provider = new LocalFS({
+      directory: dir,
+      path: function (arg, callback) {
+        callback(pth)
+      }
+    })
+
+    // make a copy of the file so we don't delete it from the fixtures directory
+    var sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    var targetFile = path.join(os.tmpdir(), randomString(20))
+
+    fs.existsSync(sourceFile).should.be.true
+    fs.writeFileSync(targetFile, fs.readFileSync(sourceFile))
+    fs.existsSync(targetFile).should.be.true
+
+    provider.save({
+      path: targetFile
+    }, undefined, function(error, url) {
+      if(error) {
+        throw error
+      }
+
+      // should have created target directory
+      fs.existsSync(targetDirectory).should.be.true
+
+      // file should have moved into directory
+      fs.existsSync(targetFile).should.be.false
+      fs.existsSync(url).should.be.true
+
+      done()
+    })
+  })
+
+  it('should bind the document to the path function', function(done) {
+    var dir = os.tmpdir()
+    var pth = randomString(20)
+    var targetDirectory = path.join(dir, pth)
+    var MyClass = function MyClass() {}
+
+    // should not exist yet
+    fs.existsSync(targetDirectory).should.be.false
+
+    var provider = new LocalFS({
+      directory: dir,
+      path: function (arg, callback) {
+        this.should.instanceOf(MyClass)
+        callback(pth)
+      }
+    })
+
+    // make a copy of the file so we don't delete it from the fixtures directory
+    var sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    var targetFile = path.join(os.tmpdir(), randomString(20))
+
+    fs.existsSync(sourceFile).should.be.true
+    fs.writeFileSync(targetFile, fs.readFileSync(sourceFile))
+    fs.existsSync(targetFile).should.be.true
+
+    provider.save({
+      path: targetFile
+    }, new MyClass(), function(error, url) {
+      if(error) {
+        throw error
+      }
+
+      // should have created target directory
+      fs.existsSync(targetDirectory).should.be.true
+
+      // file should have moved into directory
+      fs.existsSync(targetFile).should.be.false
+      fs.existsSync(url).should.be.true
+
+      done()
+    })
+  })
+
+  it('should use not create the file if an error received from path callback ', function(done) {
+    var dir = os.tmpdir()
+    var pth = randomString(20)
+    var targetDirectory = path.join(dir, pth)
+
+    // should not exist yet
+    fs.existsSync(targetDirectory).should.be.false
+
+    var provider = new LocalFS({
+      directory: dir,
+      path: function (arg, callback) {
+        callback(new Error('Some error occurs'))
+      }
+    })
+
+    // make a copy of the file so we don't delete it from the fixtures directory
+    var sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    var targetFile = path.join(os.tmpdir(), randomString(20))
+
+    fs.existsSync(sourceFile).should.be.true
+    fs.writeFileSync(targetFile, fs.readFileSync(sourceFile))
+    fs.existsSync(targetFile).should.be.true
+
+    provider.save({
+      path: targetFile
+    }, undefined, function(error, url) {
+      should.exist(error)
+
+      // should have created target directory
+      fs.existsSync(targetDirectory).should.be.false
+
+      // file should have moved into directory
+      fs.existsSync(targetFile).should.be.true
+      fs.existsSync(url).should.be.false
+
+      done()
+    })
+  })
+
   it('should delete a file', function(done) {
     var provider = new LocalFS({
       directory: os.tmpdir()
