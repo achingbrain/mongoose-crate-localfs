@@ -41,7 +41,7 @@ describe('LocalFS', function() {
 
     provider.save({
       path: targetFile
-    }, function(error, url) {
+    }, undefined, function(error, url) {
       if(error) {
         throw error
       }
@@ -72,7 +72,7 @@ describe('LocalFS', function() {
 
     provider.save({
       path: targetFile
-    }, function(error, url) {
+    }, undefined, function(error, url) {
       if(error) {
         throw error
       }
@@ -80,7 +80,7 @@ describe('LocalFS', function() {
       // file should have moved into directory
       fs.existsSync(url).should.be.true
 
-      provider.remove({url: url}, function(error) {
+      provider.remove({url: url}, undefined, function(error) {
         if(error) {
           throw error
         }
@@ -108,7 +108,7 @@ describe('LocalFS', function() {
     fs.writeFileSync(targetFile, fs.readFileSync(sourceFile))
     fs.existsSync(targetFile).should.be.true
 
-    provider.remove({url: targetFile}, function(error) {
+    provider.remove({url: targetFile}, undefined, function(error) {
       // should have errored
       error.should.be.ok
 
