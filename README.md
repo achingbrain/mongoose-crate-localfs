@@ -18,9 +18,38 @@ var PostSchema = new mongoose.Schema({
 
 PostSchema.plugin(crate, {
   storage: new LocalFS({
-    directory: '/path/to/storage/directory',
+    directory: '/path/to/storage/directory', // required, can be a function or a string
     path: function(attachment) { // where the file is stored in the directory - defaults to this function
-      return return '/' + path.basename(attachment.path)
+      return '/' + path.basename(attachment.path)
+    }
+  }),
+  fields: {
+    file: {}
+  }
+})
+
+var Post = mongoose.model('Post', PostSchema)
+```
+
+or with a callback for `dir` or `path`
+```javascript
+var mongoose = require('mongoose'),
+  crate = require('mongoose-crate'),
+  LocalFS = require('mongoose-crate-localfs')
+
+var PostSchema = new mongoose.Schema({
+  title: String,
+  description: String
+})
+
+PostSchema.plugin(crate, {
+  storage: new LocalFS({
+    directory: function (attachment, respond) { // required, can be a function or a string
+      // you can access the model with this
+      respond(path.join('/path/to/storage/directory', this.id))
+    },
+    path: function(attachment) { // where the file is stored in the directory - defaults to this function
+      return '/' + path.basename(attachment.path)
     }
   }),
   fields: {
