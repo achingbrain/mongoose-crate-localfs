@@ -1,6 +1,6 @@
 'use strict'
 
-const should = require('should')
+require('should')
 const crypto = require('crypto')
 const os = require('os')
 const fs = require('fs')
@@ -9,13 +9,12 @@ const describe = require('mocha').describe
 const it = require('mocha').it
 const LocalFS = require('../lib/LocalFS')
 const randomString = (length) => {
-  return crypto.randomBytes(Math.ceil(length/2))
+  return crypto.randomBytes(Math.ceil(length / 2))
     .toString('hex')
     .slice(0, length)
 }
 
 describe('LocalFS', () => {
-
   it('should object strenuously if target directory is not specified', (done) => {
     (() => new LocalFS()).should.throw()
 
@@ -33,7 +32,7 @@ describe('LocalFS', () => {
     })
 
     // make a copy of the file so we don't delete it from the fixtures directory
-    const sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    const sourceFile = path.resolve(path.join(__dirname, '.', 'fixtures', 'node_js_logo.png'))
     const targetFile = path.join(os.tmpdir(), randomString(20))
 
     fs.existsSync(sourceFile).should.be.true
@@ -64,7 +63,7 @@ describe('LocalFS', () => {
     })
 
     // make a copy of the file so we don't delete it from the fixtures directory
-    const sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    const sourceFile = path.resolve(path.join(__dirname, '.', 'fixtures', 'node_js_logo.png'))
     const targetFile = path.join(os.tmpdir(), randomString(20))
 
     fs.existsSync(sourceFile).should.be.true
@@ -102,7 +101,7 @@ describe('LocalFS', () => {
     })
 
     // make a copy of the file so we don't delete it from the fixtures directory
-    const sourceFile = path.resolve(__dirname + '/./fixtures/node_js_logo.png')
+    const sourceFile = path.resolve(path.join(__dirname, '.', 'fixtures', 'node_js_logo.png'))
     const targetFile = path.join(os.tmpdir(), randomString(20))
 
     fs.existsSync(sourceFile).should.be.true

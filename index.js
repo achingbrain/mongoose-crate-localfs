@@ -1,2 +1,2 @@
 
-module.exports = require("./lib/LocalFS");
+module.exports = require('./lib/LocalFS')
