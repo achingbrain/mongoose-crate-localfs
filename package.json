@@ -2,7 +2,13 @@
   "author": "Alex Potsides",
   "name": "mongoose-crate-localfs",
   "description": "mongoose-crate StorageProvider that stores files on the local filesystem",
-  "keywords": ["mongoose", "mongoose-crate", "uploads", "attachments", "files"],
+  "keywords": [
+    "mongoose",
+    "mongoose-crate",
+    "uploads",
+    "attachments",
+    "files"
+  ],
   "version": "1.1.1",
   "homepage": "https://github.com/achingbrain/mongoose-crate-localfs",
   "repository": {
@@ -15,16 +21,16 @@
     "coveralls": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "async": "^0.9",
-    "mkdirp": "^0.5",
-    "check-types": "^1.2"
+    "async": "^1.5.2",
+    "check-types": "^7.0.0",
+    "mkdirp": "^0.5"
   },
   "devDependencies": {
-    "mocha": "^1.18",
-    "should": "^4.0",
-    "mongoose": "^3.8",
-    "istanbul": "^0.3",
-    "sinon": "^1.9",
-    "coveralls": "^2.8"
+    "coveralls": "^2.8",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3",
+    "mongoose": "^4.4.20",
+    "should": "^9.0.2",
+    "sinon": "^1.9"
   }
 }
