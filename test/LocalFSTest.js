@@ -7,7 +7,7 @@ const fs = require('fs')
 const path = require('path')
 const describe = require('mocha').describe
 const it = require('mocha').it
-const LocalFS = require('../lib/LocalFS')
+const LocalFS = require('../')
 const randomString = (length) => {
   return crypto.randomBytes(Math.ceil(length / 2))
     .toString('hex')
@@ -19,6 +19,18 @@ describe('LocalFS', () => {
     (() => new LocalFS()).should.throw()
 
     done()
+  })
+
+  it('should override path function', () => {
+    const fn = (attachment) => {
+
+    }
+    const storage = new LocalFS({
+      path: fn,
+      directory: os.tmpdir()
+    })
+
+    storage._options.path.should.equal(fn)
   })
 
   it('should store a file', (done) => {
@@ -117,5 +129,42 @@ describe('LocalFS', () => {
 
       done()
     })
+  })
+
+  it('should not store a file outside of our directory', (done) => {
+    const targetDirectory = path.join(os.tmpdir(), randomString(20))
+
+    const provider = new LocalFS({
+      directory: targetDirectory,
+      path: (attachment) => `../${attachment.path}`
+    })
+
+    provider.save({url: 'foo.txt'}, (error) => {
+      // should have errored
+      error.should.be.ok
+      error.message.should.equal('Will only store files under our storage directory')
+
+      done()
+    })
+  })
+
+  it('should not remove an attachment with no path', (done) => {
+    const targetDirectory = path.join(os.tmpdir(), randomString(20))
+
+    const provider = new LocalFS({
+      directory: targetDirectory
+    })
+
+    provider.remove({url: null}, done)
+  })
+
+  it('should survive deleting non-existant files', (done) => {
+    const targetDirectory = path.join(os.tmpdir(), randomString(20))
+    const provider = new LocalFS({
+      directory: targetDirectory
+    })
+    const targetFile = path.join(targetDirectory, 'foo.txt')
+
+    provider.remove({url: targetFile}, done)
   })
 })
